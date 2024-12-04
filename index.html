@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats Électoraux du Cameroun</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="leaflet/leaflet.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="active">Accueil</a>
+            <a href="login.html">Connexion</a>
+        </nav>
+    </header>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Résultats des Élections au Cameroun</h1>
+
+        <div class="row card m-1">
+            <div class="col-md-12 my-2">
+                <div style="background-color: #ffffff">
+                    <h3 class="text-center ">WINNER</h3>
+                    <div class="d-flex justify-content-center">
+                        <h3 class="text-center d-flex justify-content-center align-items-center">
+                            Georges Mc GRegor / UDC / 50% /
+                            <span class="" style="height: 30px; width:30px;background: red;margin-left:5px "></span>
+                        </h3>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class="hr"></div>
+            <div class="col-md-12">
+                <div style="background-color: #ffffff">
+                    <h3 class="text-center ">LEGENDE</h3>
+                    <div class="d-flex align-content-end flex-wrap">
+                        <div class="col-md-3 p-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center d-flex justify-content-center align-items-center">
+                                        Georges McGregor / UDC
+                                        <span class="" style="height: 30px; width:30px;background: red;margin-left:5px "></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 p-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center d-flex justify-content-center align-items-center">
+                                        Votre Candidat / Contratum
+                                        <span class=""
+                                            style="height: 30px; width:30px;background: blue;margin-left:5px "></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 p-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center d-flex justify-content-center align-items-center">
+                                        Votre Candidat / Contratum
+                                        <span class=""
+                                            style="height: 30px; width:30px;background: green;margin-left:5px "></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 p-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center d-flex justify-content-center align-items-center">
+                                        Votre Candidat / Contratum
+                                        <span class=""
+                                            style="height: 30px; width:30px;background: purple;margin-left:5px "></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 p-1">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="text-center d-flex justify-content-center align-items-center">
+                                        Votre Candidat / Contratum
+                                        <span class=""
+                                            style="height: 30px; width:30px;background: purple;margin-left:5px "></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100">
+                <div id="map" class="" style="height: 600px;"></div>
+            </div>
+        </div>
+
+        <div class="row mt-4 mb-4">
+
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-header text-white" style="background-color: #004d40">
+                        <h3 class="text-center">Résultats Globaux</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Candidat</th>
+                                    <th>Parti</th>
+                                    <th>Voix</th>
+                                    <th>Pourcentage</th>
+                                    <th>Couleur</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultats-globaux">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <footer class="footer text-center w-100 text-white mt-2" style="background-color: #004d40">
+        <div class="container p-4 pb-0">
+            <section class="">
+                <p class="d-flex justify-content-center align-items-center">
+                    <span class="me-3">Système de Gestion Électorale du Cameroun</span>
+                </p>
+            </section>
+        </div>
+        <div class="text-center p-3" style="background-color:#003f36;">
+            <p class="small text-white">Copyright © 2022 GI2025. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="leaflet/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

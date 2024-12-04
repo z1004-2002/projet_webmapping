@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats de Vote - Gestion Électorale</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="bureaux-vote.html">Bureaux de Vote</a>
+            <a href="resultats-vote.html" class="active">Résultats</a>
+            <a href="partis-candidats.html">Partis/Candidats</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container mt-5">
+            <h1 class="text-center mb-4">Enregistrement des Résultats de Vote {{nom}}</h1>
+            
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="card">
+                        <div class="card-header text-white" style="background-color: #004d40">
+                            <h3 class="text-center">Enregistrement pour une canditat</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="resultats-vote-form">
+                                
+                                <div class="mb-3">
+                                    <label for="candidat" class="form-label">Parti/Candidat</label>
+                                    <select class="form-select" id="candidat" required>
+                                        <option value="">Sélectionnez un candidat</option>
+                                        <!-- Options seront chargées dynamiquement -->
+                                    </select>
+                                </div>
+    
+                                <div class="mb-3">
+                                    <label for="votes" class="form-label">Nombre de Votes</label>
+                                    <input type="number" class="form-control" id="votes" required>
+                                </div>
+                                <div class="form-group">
+                                <div class="mb-3">
+                                    <label for="preuve-image" class="form-label">Procès-Verbal (Image du PV)</label>
+                                    <input type="file" class="form-control" id="preuve-image" accept="image/*" required>
+                                </div>
+    
+                                <div class="mb-3">
+                                    <img id="image-preview" class="img-fluid" style="display: none;">
+                                </div>
+    
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success">Enregistrer les Résultats</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+
+    <footer class="footer text-center w-100 text-white mt-2" style="background-color: #004d40">
+        <div class="container p-4 pb-0">
+            <section class="">
+                <p class="d-flex justify-content-center align-items-center">
+                    <span class="me-3">Système de Gestion Électorale du Cameroun</span>
+                </p>
+            </section>
+        </div>
+        <div class="text-center p-3" style="background-color:#003f36;">
+            <p class="small text-white">Copyright © 2022 GI2025. Tous droits réservés.</p>
+        </div>
+    </footer>
+    
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

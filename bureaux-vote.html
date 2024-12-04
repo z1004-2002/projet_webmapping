@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bureaux de Vote - Gestion Électorale</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="login.html">Connexion</a>
+            <a href="bureaux-vote.html" class="active">Bureaux de Vote</a>
+            <a href="resultats-vote.html">Résultats</a>
+            <a href="partis-candidats.html">Partis/Candidats</a>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Gestion des Bureaux de Vote</h1>
+
+        <div class="form-container">
+            <form id="bureau-vote-form">
+                <div class="form-group">
+                    <label for="region">Région</label>
+                    <select id="region" name="region" required>
+                        <option value="">Sélectionnez une région</option>
+                        <option value="adamaoua">Adamaoua</option>
+                        <option value="centre">Centre</option>
+                        <option value="est">Est</option>
+                        <option value="extreme-nord">Extrême-Nord</option>
+                        <option value="littoral">Littoral</option>
+                        <option value="nord">Nord</option>
+                        <option value="nord-ouest">Nord-Ouest</option>
+                        <option value="ouest">Ouest</option>
+                        <option value="sud">Sud</option>
+                        <option value="sud-ouest">Sud-Ouest</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="bureau-name">Nom du Bureau</label>
+                    <input type="text" id="bureau-name" name="bureau-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="bureau-address">Adresse</label>
+                    <input type="text" id="bureau-address" name="bureau-address" required>
+                </div>
+
+                <button type="submit" class="btn-primary">Enregistrer le Bureau</button>
+            </form>
+        </div>
+
+        <div class="bureaux-list">
+            <h2>Liste des Bureaux de Vote</h2>
+            <table id="bureaux-table">
+                <thead>
+                    <tr>
+                        <th>Région</th>
+                        <th>Nom du Bureau</th>
+                        <th>Adresse</th>
+                    </tr>
+                </thead>
+                <tbody id="bureaux-body">
+                    <!-- Les bureaux seront chargés dynamiquement -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer class="footer text-center w-100 text-white mt-2" style="background-color: #004d40">
+        <div class="container p-4 pb-0">
+            <section class="">
+                <p class="d-flex justify-content-center align-items-center">
+                    <span class="me-3">Système de Gestion Électorale du Cameroun</span>
+                </p>
+            </section>
+        </div>
+        <div class="text-center p-3" style="background-color:#003f36;">
+            <p class="small text-white">Copyright © 2022 GI2025. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>

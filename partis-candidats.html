@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partis et Candidats - Gestion Électorale</title>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="login.html">Connexion</a>
+            <a href="bureaux-vote.html">Bureaux de Vote</a>
+            <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+                    <input type="text" id="parti-nom" name="parti-nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="parti-couleur">Couleur du Parti</label>
+                    <input type="color" id="parti-couleur" name="parti-couleur" required>
+                </div>
+                <button type="submit" class="btn-primary">Enregistrer le Parti</button>
+            </form>
+        </div>
+
+        <div class="candidats-container">
+            <h1>Enregistrement des Candidats</h1>
+            <form id="candidat-form">
+                <div class="form-group">
+                    <label for="candidat-nom">Nom du Candidat</label>
+                    <input type="text" id="candidat-nom" name="candidat-nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="candidat-parti">Parti Politique</label>
+                    <select id="candidat-parti" name="candidat-parti" required>
+                        <!-- Options seront chargées dynamiquement -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="candidat-photo">Photo du Candidat</label>
+                    <input type="file" id="candidat-photo" name="candidat-photo" accept="image/*" required>
+                </div>
+                <button type="submit" class="btn-primary">Enregistrer le Candidat</button>
+            </form>
+        </div>
+    </main>
+
+
+    <footer class="footer text-center w-100 text-white mt-2" style="background-color: #004d40">
+        <div class="container p-4 pb-0">
+            <section class="">
+                <p class="d-flex justify-content-center align-items-center">
+                    <span class="me-3">Système de Gestion Électorale du Cameroun</span>
+                </p>
+            </section>
+        </div>
+        <div class="text-center p-3" style="background-color:#003f36;">
+            <p class="small text-white">Copyright © 2022 GI2025. Tous droits réservés.</p>
+        </div>
+    </footer>
+    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
