@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partis et Candidats - Gestion Électorale</title>
+    <link href="../../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="../../index.html">Accueil</a>
+            <a href="bureaux-vote.html">Bureaux de Vote</a>
+            <a href="partis-candidats.html" class="active">Candidats</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 class="text-center mb-2">Enregistrement des Candidats</h1>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-header text-white" style="background-color: #004d40">
+                            <h3 class="text-center">Formulaire d'enregistrement d'un bureau de vote</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="candidat-form">
+                                <div class="mb-3">
+                                    <label for="nom" class="form-label">Nom du Candidat</label>
+                                    <input type="text" name="nom" class="form-control" id="nom" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="parti" class="form-label">Parti Politique</label>
+                                    <input type="text" name="parti" class="form-control" id="parti" required>
+                                </div>
+                                <label for="exampleColorInput" class="form-label">Couleur</label>
+                                <input type="color" class="form-control form-control-color" id="exampleColorInput"
+                                    value="#563d7c" title="Choose your color">
+                                <div class="mb-3">
+                                    <label for="electeur" class="form-label">Nombre d'électeur</label>
+                                    <input type="number" min="0" class="form-control" id="electeur" required>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success">Enregistrer le Candidat</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 mb-4">
+
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-header text-white" style="background-color: #004d40">
+                        <h3 class="text-center">Liste des Bureaux de Vote</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Région</th>
+                                    <th>Département</th>
+                                    <th>Arrondissement</th>
+                                    <th>Matricule</th>
+                                    <th>Nombre Electeur</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tab_bureau">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <footer class="footer text-center w-100 text-white mt-2" style="background-color: #004d40">
+        <div class="container p-4 pb-0">
+            <section class="">
+                <p class="d-flex justify-content-center align-items-center">
+                    <span class="me-3">Système de Gestion Électorale du Cameroun</span>
+                </p>
+            </section>
+        </div>
+        <div class="text-center p-3" style="background-color:#003f36;">
+            <p class="small text-white">Copyright © 2022 GI2025. Tous droits réservés.</p>
+        </div>
+    </footer>
+</body>
+<script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../main.js"></script>
+
+</html>
