@@ -59,7 +59,7 @@ var carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}
     maxZoom: 20
 });
 
-//osm.addTo(map);
+// osm.addTo(map);
 
 //satelite.addTo(map);
 carto.addTo(map);
@@ -154,7 +154,7 @@ map.on('zoomend', () => {
         loadPays(style)
     } else if (zoomLevel <= 6) {
         loadRegion(style)
-    } else if (zoomLevel <= 7) {
+    } else if (zoomLevel <= 8) {
         loadDepartment(style)
     } else {
         loadArrondissement(style)
