@@ -144,19 +144,29 @@ const loadArrondissement = (style) => {
         })
         .catch(error => console.error('Erreur lors du chargement du fichier GeoJSON:', error));
 }
-
+const emtyMap = ()=>{
+    map.eachLayer(layer => {
+        if (layer instanceof L.GeoJSON) {
+          map.removeLayer(layer);
+        }
+      });      
+}
 loadDepartment(style);
 
 map.on('zoomend', () => {
     const zoomLevel = map.getZoom();
     console.log("Niveau de zoom actuel :", zoomLevel);
     if (zoomLevel <= 5) {
+        emtyMap()
         loadPays(style)
     } else if (zoomLevel <= 6) {
+        emtyMap()
         loadRegion(style)
     } else if (zoomLevel <= 8) {
+        emtyMap()
         loadDepartment(style)
     } else {
+        emtyMap()
         loadArrondissement(style)
     }
 });
