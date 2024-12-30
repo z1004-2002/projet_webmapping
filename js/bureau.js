@@ -3,8 +3,6 @@ let tab_candidat = document.getElementById('tab_bureau');
 let url = 'http://localhost:3001';
 let buttons = []
 
-
-
 function logout() {
     localStorage.clear();
     window.location.href = "../login.html";
