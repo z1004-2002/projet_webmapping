@@ -15,6 +15,8 @@
             <a href="../../index.html">Accueil</a>
             <a href="bureaux-vote.html" class="active">Bureaux de Vote</a>
             <a href="partis-candidats.html">Partis/Candidats</a>
+            <!-- zone de logout -->
+            <a class="logout" id="logout">Déconnexion</a>
         </nav>
     </header>
 
@@ -28,6 +30,7 @@
                             <h3 class="text-center">Formulaire d'enregistrement d'un bureau de vote</h3>
                         </div>
                         <div class="card-body">
+                            <div id="alert"></div>
                             <form id="login-form">
                                 <div class="form-group">
                                     <label for="region" class="form-label">Région</label>
@@ -65,8 +68,25 @@
                                     <label for="electeur" class="form-label">Nombre d'électeur</label>
                                     <input type="number" min="0" class="form-control" id="electeur" required>
                                 </div>
+
+                                <div class="card-header">
+                                    <h4 >Scrutateur</h4>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Tel</label>
+                                    <input type="text" class="form-control" id="phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="login" class="form-label">Login</label>
+                                    <input type="text"  class="form-control" id="login" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="login" class="form-label">Mot de passe</label>
+                                    <input type="text" class="form-control" id="password" required>
+                                </div>
+
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-success">Enregistrer le Bureau</button>
+                                    <button type="button" id="button" class="btn btn-success">Enregistrer le Bureau</button>
                                 </div>
                             </form>
                         </div>
@@ -86,11 +106,14 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th>N</th>
                                     <th>Région</th>
                                     <th>Département</th>
                                     <th>Arrondissement</th>
                                     <th>Matricule</th>
                                     <th>Nombre Electeur</th>
+                                    <th>Scrutateur</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="tab_bureau">
@@ -137,7 +160,7 @@
                 return response.json();
             }).then(data => {
                 let result = data.features;
-                console.log(result[0].properties.NAME_1);
+                //console.log(result[0].properties.NAME_1);
                 for(let i = 0; i < result.length; i++) {
                     if(result[i].properties.NAME_1 == region.value){
                         options += `
@@ -162,7 +185,7 @@
                 return response.json();
             }).then(data => {
                 let result = data.features;
-                console.log(result[0].properties.NAME_2);
+                //console.log(result[0].properties.NAME_2);
                 for(let i = 0; i < result.length; i++) {
                     if(result[i].properties.NAME_2 == departement.value){
                         options += `
@@ -178,6 +201,7 @@
         })
 
     </script>
+    <script src="../../js/bureau.js"></script>
 </body>
 
 </html>

@@ -24,7 +24,7 @@
             <div class="col-md-12 my-2">
                 <div style="background-color: #ffffff">
                     <h3 class="text-center ">WINNER</h3>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center" id="winner">
                         <h3 class="text-center d-flex justify-content-center align-items-center">
                             Georges Mc GRegor / UDC / 50% /
                             <span class="" style="height: 30px; width:30px;background: red;margin-left:5px "></span>
@@ -37,13 +37,13 @@
             <div class="col-md-12">
                 <div style="background-color: #ffffff">
                     <h3 class="text-center ">LEGENDE</h3>
-                    <div class="d-flex align-content-end flex-wrap">
+                    <div class="d-flex align-content-end flex-wrap" id="candidat">
                         <div class="col-md-3 p-1">
                             <div class="card">
                                 <div class="card-body">
                                     <div class="text-center d-flex justify-content-center align-items-center">
                                         Georges McGregor / UDC
-                                        <span class="" style="height: 30px; width:30px;background: red;margin-left:5px "></span>
+                                        <span class="" style="height: 30px; width:30px;background: #252525;margin-left:5px "></span>
                                     </div>
                                 </div>
                             </div>
@@ -106,13 +106,14 @@
             <div class="col-md-12">
                 <div class="card">
 
-                    <div class="card-header text-white" style="background-color: #004d40">
+                    <div class="card-header text-white" style="background-color: #004d40 ">
                         <h3 class="text-center">Résultats Globaux</h3>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th>N</th>
                                     <th>Candidat</th>
                                     <th>Parti</th>
                                     <th>Voix</th>
@@ -120,7 +121,7 @@
                                     <th>Couleur</th>
                                 </tr>
                             </thead>
-                            <tbody id="resultats-globaux">
+                            <tbody id="resultats">
 
                             </tbody>
                         </table>
@@ -149,7 +150,7 @@
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="leaflet/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""></script>
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
