@@ -17,118 +17,56 @@
             <a href="pages/login.html">Connexion</a>
         </nav>
     </header>
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">Résultats des Élections au Cameroun</h1>
+    <div class="container-fluid mt-4">
+        <h1 class="text-center mb-2">Résultats des Élections au Cameroun</h1>
+        <div class="row d-flex align-content-center justify-content-center">
+            <div class="col-md-5 mt-2 mb-2">
+                
+                    <div class="card">
+                        <div class="card-header text-white" style="background-color: #004d40 ">
+                            <h3 class="text-center">Résultats Globaux</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>N</th>
+                                        <th>Candidat</th>
+                                        <th>Parti</th>
+                                        <th>Voix</th>
+                                        <th>Pourcentage</th>
+                                        <th>Couleur</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultats">
 
-        <div class="row card m-1">
-            <div class="col-md-12 my-2">
-                <div style="background-color: #ffffff">
-                    <h3 class="text-center ">WINNER</h3>
-                    <div class="d-flex justify-content-center" id="winner">
-                        <h3 class="text-center d-flex justify-content-center align-items-center">
-                            Georges Mc GRegor / UDC / 50% /
-                            <span class="" style="height: 30px; width:30px;background: red;margin-left:5px "></span>
-                        </h3>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <hr>
-                </div>
             </div>
-            <div class="hr"></div>
-            <div class="col-md-12">
-                <div style="background-color: #ffffff">
-                    <h3 class="text-center ">LEGENDE</h3>
-                    <div class="d-flex align-content-end flex-wrap" id="candidat">
-                        <div class="col-md-3 p-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="text-center d-flex justify-content-center align-items-center">
-                                        Georges McGregor / UDC
-                                        <span class="" style="height: 30px; width:30px;background: #252525;margin-left:5px "></span>
-                                    </div>
-                                </div>
+            <div class="col-md-5 card m-1">
+                <div class="col-md-12">
+                    <div class="py-2" style="background-color: #ffffff">
+                        <h3 class="text-center ">LEGENDE</h3>
+                        <div class="d-flex align-content-start flex-wrap" id="candidat">
+                            <div class="back" id="back">
+                                    << retour aux regions
                             </div>
-                        </div>
-                        <div class="col-md-3 p-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="text-center d-flex justify-content-center align-items-center">
-                                        Votre Candidat / Contratum
-                                        <span class=""
-                                            style="height: 30px; width:30px;background: blue;margin-left:5px "></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 p-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="text-center d-flex justify-content-center align-items-center">
-                                        Votre Candidat / Contratum
-                                        <span class=""
-                                            style="height: 30px; width:30px;background: green;margin-left:5px "></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 p-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="text-center d-flex justify-content-center align-items-center">
-                                        Votre Candidat / Contratum
-                                        <span class=""
-                                            style="height: 30px; width:30px;background: purple;margin-left:5px "></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 p-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="text-center d-flex justify-content-center align-items-center">
-                                        Votre Candidat / Contratum
-                                        <span class=""
-                                            style="height: 30px; width:30px;background: purple;margin-left:5px "></span>
-                                    </div>
-                                </div>
+                            <div class="pl-2 back" id="back2">
+                                << retour aux départements
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="w-100">
-                <div id="map" class="" style="height: 600px;"></div>
-            </div>
-        </div>
-
-        <div class="row mt-4 mb-4">
-
-            <div class="col-md-12">
-                <div class="card">
-
-                    <div class="card-header text-white" style="background-color: #004d40 ">
-                        <h3 class="text-center">Résultats Globaux</h3>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>N</th>
-                                    <th>Candidat</th>
-                                    <th>Parti</th>
-                                    <th>Voix</th>
-                                    <th>Pourcentage</th>
-                                    <th>Couleur</th>
-                                </tr>
-                            </thead>
-                            <tbody id="resultats">
-
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="w-100">
+                    <div id="map" class="" style="height: 550px;"></div>
                 </div>
             </div>
         </div>
+
+
+
     </div>
 
 

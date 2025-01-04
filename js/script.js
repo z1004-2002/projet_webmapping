@@ -3,6 +3,11 @@ let resultRegion = [];
 let resultDepartement = [];
 let resultArrondissement = [];
 let results = [];
+let back_button = document.getElementById("back")
+let back_button2 = document.getElementById("back2")
+let current_region = '';
+
+var map = L.map('map')
 
 function roundToTwo(num) {
     return +(Math.round(num + "e+2") + "e-2");
@@ -34,12 +39,22 @@ function getMax(data) {
         return null;
     }
 }
-
+let back = () => {
+    back_button.style.display = 'none'
+    back_button2.style.display = 'none'
+    emtyMap()
+    loadRegion(regionStyle)
+}
+let back2 = () => {
+    back_button.style.display = 'block'
+    back_button2.style.display = 'none'
+    emtyMap()
+    loadDepartment(departementStyle, current_region)
+}
 const init = () => {
-    let html = ``;
+    back_button.style.display = 'none'
+    back_button2.style.display = 'none'
     let html2 = ``;
-    let winner = document.getElementById('winner');
-    let candidat = document.getElementById('candidat');
     let tab_resultats = document.getElementById('resultats');
     const requestOptions = {
         method: "GET",
@@ -52,36 +67,8 @@ const init = () => {
             let globe = JSON.parse(result)
             let data = sortResults(globe.resultCandidat);
             results = data
-            let winnerData = getMax(data);
-            if (winnerData != null) {
-                winner.innerHTML = `
-                    <h3 class="text-center d-flex justify-content-center align-items-center">
-                             ${winnerData.nomCandidat} / ${winnerData.parti} / ${roundToTwo(winnerData.nombreVoie * 100 / globe.totalElecteur)} % /
-                            <span class="" style="height: 30px; width:30px;background: ${winnerData.couleur};margin-left:5px "></span>
-                        </h3>
-                `;
-            } else {
-                winner.innerHTML = `
-                    <h3 class="text-center d-flex justify-content-center align-items-center">
-                             Aucun gagnant
-                        </h3>
-                `;
-            }
-
 
             for (let i = 0; i < data.length; i++) {
-                html += `
-                    <div class="col-md-3 p-1">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="text-center d-flex justify-content-center align-items-center">
-                                        ${data[i].nomCandidat} / ${data[i].parti}
-                                        <span class="" style="height: 30px; width:30px;background: ${data[i].couleur};margin-left:5px "></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                `;
                 html2 += `
                     <tr>
                         <td>${i + 1}</td>
@@ -98,7 +85,6 @@ const init = () => {
                 `;
             }
             tab_resultats.innerHTML = html2;
-            candidat.innerHTML = html;
         })
         .catch((error) => console.error(error));
 
@@ -240,7 +226,7 @@ function getColorArrondissement(arrondissementName, resultArrondissement) {
     return '#fff';
 }
 
-// Fonction de style pour chaque région
+
 function style(feature) {
     return {
         fillColor: getColor(),
@@ -282,25 +268,38 @@ function arrondissementStyle(feature) {
         fillOpacity: 0.7
     };
 }
-
 const loadPays = (style) => {
     fetch('geojson/cameroun.geojson')
         .then(response => response.json())
         .then(data => {
-            L.geoJSON(data, {
+            let layer = L.geoJSON(data, {
                 style: style,
                 onEachFeature: function (feature, layer) {
                     if (feature.properties && feature.properties.COUNTRY) {
                         layer.bindTooltip(feature.properties.COUNTRY, {
-                            // permanent: true,
                             direction: 'center',
                             className: 'custom-tooltip'
                         });
                     }
                 }
             }).addTo(map);
+            map.fitBounds(layer.getBounds())
+
         })
         .catch(error => console.error('Erreur lors du chargement du fichier GeoJSON:', error));
+}
+const onEachRegion = (feature, layer) => {
+    if (feature.properties && feature.properties.NAME_1) {
+        layer.bindTooltip(feature.properties.NAME_1, {
+            // permanent: true,
+            direction: 'center',
+            className: 'custom-tooltip'
+        });
+    }
+    layer.on('click', () => {
+        emtyMap()
+        loadDepartment(departementStyle, feature.properties.NAME_1)
+    });
 }
 
 const loadRegion = (style) => {
@@ -308,47 +307,55 @@ const loadRegion = (style) => {
     fetch('geojson/region.geojson')
         .then(response => response.json())
         .then(data => {
-            L.geoJSON(data, {
+            let layer = L.geoJSON(data, {
                 style: style,
-                onEachFeature: function (feature, layer) {
-                    if (feature.properties && feature.properties.NAME_1) {
-                        layer.bindTooltip(feature.properties.NAME_1, {
-                            // permanent: true,
-                            direction: 'center',
-                            className: 'custom-tooltip'
-                        });
-                    }
-                }
+                onEachFeature: onEachRegion
             }).addTo(map);
+            map.fitBounds(layer.getBounds())
         })
         .catch(error => console.error('Erreur lors du chargement du fichier GeoJSON:', error));
 }
 
-const loadDepartment = (style) => {
+const onEachDepartement = (feature, layer) => {
+    if (feature.properties && feature.properties.NAME_2) {
+        layer.bindTooltip(feature.properties.NAME_2, {
+            // permanent: true,
+            direction: 'center',
+            className: 'custom-tooltip'
+        });
+    }
+    layer.on('click', () => {
+        emtyMap()
+        loadArrondissement(arrondissementStyle, feature.properties.NAME_2)
+    });
+}
+const loadDepartment = (style, name) => {
+    back_button.style.display = 'block'
+    back_button2.style.display = 'none'
     fetch('geojson/departement.geojson')
         .then(response => response.json())
         .then(data => {
-            L.geoJSON(data, {
+            let filter = data.features.filter(obj => obj.properties.NAME_1 === name);
+            data.features = filter
+            let layer = L.geoJSON(data, {
                 style: style,
-                onEachFeature: function (feature, layer) {
-                    if (feature.properties && feature.properties.NAME_2) {
-                        layer.bindTooltip(feature.properties.NAME_2, {
-                            // permanent: true,
-                            direction: 'center',
-                            className: 'custom-tooltip'
-                        });
-                    }
-                }
+                onEachFeature: onEachDepartement
             }).addTo(map);
+            map.fitBounds(layer.getBounds())
         })
         .catch(error => console.error('Erreur lors du chargement du fichier GeoJSON:', error));
 }
 
-const loadArrondissement = (style) => {
+const loadArrondissement = (style, name) => {
+    back_button.style.display = 'block'
+    back_button2.style.display = 'block'
     fetch('geojson/arrondissement.geojson')
         .then(response => response.json())
         .then(data => {
-            L.geoJSON(data, {
+            let filter = data.features.filter(obj => obj.properties.NAME_2 === name);
+            data.features = filter
+            current_region = data.features[0].properties.NAME_1
+            let layer = L.geoJSON(data, {
                 style: style,
                 onEachFeature: function (feature, layer) {
                     if (feature.properties && feature.properties.NAME_3) {
@@ -360,6 +367,7 @@ const loadArrondissement = (style) => {
                     }
                 }
             }).addTo(map);
+            map.fitBounds(layer.getBounds())
         })
         .catch(error => console.error('Erreur lors du chargement du fichier GeoJSON:', error));
 }
@@ -371,50 +379,8 @@ const emtyMap = () => {
         }
     });
 }
-
+back_button.addEventListener("click", back)
+back_button2.addEventListener("click", back2)
 init()
-
-var map = L.map('map').setView([7.3696495, 12.3445856], 8);
-
-var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-});
-
-var satelite = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}', {
-    minZoom: 0,
-    maxZoom: 20,
-    attribution: '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    ext: 'jpg'
-})
-var carto = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: 'abcd',
-    maxZoom: 20
-});
-
-// osm.addTo(map);
-
-//satelite.addTo(map);
-carto.addTo(map);
-
-
-loadDepartment(departementStyle);
-
-map.on('zoomend', () => {
-    const zoomLevel = map.getZoom();
-    // console.log("Niveau de zoom actuel :", zoomLevel);
-    if (zoomLevel <= 5) {
-        emtyMap()
-        loadPays(style)
-    } else if (zoomLevel <= 6) {
-        emtyMap()
-        loadRegion(regionStyle)
-    } else if (zoomLevel <= 8) {
-        emtyMap()
-        loadDepartment(departementStyle)
-    } else {
-        emtyMap()
-        loadArrondissement(arrondissementStyle)
-    }
-});
-
+emtyMap()
+loadRegion(regionStyle)

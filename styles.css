@@ -43,3 +43,10 @@ nav a.active {
 .leaflet-control-attribution{
     display: none;
 }
+.table{
+    background: #00796b;
+}
+.back{
+    text-decoration: underline;
+    cursor: pointer;
+}
