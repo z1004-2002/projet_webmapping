@@ -14,20 +14,21 @@
         <nav>
             <a href="../../index.html">Accueil</a>
             <a href="resultats-vote.html" class="active">Résultats</a>
+            <a class="logout" id="logout">Déconnexion</a>
         </nav>
     </header>
 
     <main>
         <div class="container mt-5">
             <h1 class="text-center mb-4">Résultats de Vote pour un bureau de vote</h1>
-
             <div class="row">
-                <div class="col-md-8 offset-md-2">
+                <div class="container col-md-6 my-2">
                     <div class="card">
                         <div class="card-header text-white" style="background-color: #004d40">
                             <h3 class="text-center">Enregistrement pour une canditat</h3>
                         </div>
                         <div class="card-body">
+                            <div id="alert"></div>
                             <form id="resultats-vote-form">
 
                                 <div class="mb-3">
@@ -40,73 +41,80 @@
 
                                 <div class="mb-3">
                                     <label for="votes" class="form-label">Nombre de Votes</label>
-                                    <input type="number" class="form-control" id="votes" required>
+                                    <div class="input-group">
+                                        <input type="number" min="0" class="form-control" id="votes" required>
+                                        <span class="input-group-text" id="maxi">/ 0</span>
+                                    </div>
                                 </div>
                                 <div class="form-group">
 
                                     <div class="d-grid">
-                                        <button type="submit" class="btn btn-success">Enregistrer les Résultats</button>
+                                        <button type="button" id="enregistrer" class="btn btn-success">Enregistrer les Résultats</button>
                                     </div>
+                                </div>
+
                             </form>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row mt-4 mb-4">
-
-                <div class="col-md-12">
+                <div class="container col-md-6  my-2">
                     <div class="card">
-
                         <div class="card-header text-white" style="background-color: #004d40">
-                            <h3 class="text-center">Liste des Résultats</h3>
+                            <h3 class="text-center">Charger le pv</h3>
                         </div>
                         <div class="card-body">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Candidat</th>
-                                        <th>Parti</th>
-                                        <th>Couleur</th>
-                                        <th>Nombre de voie</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tab_result">
+                            <div id="alert2"></div>
+                            <form id="resultats-vote-form">
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                        <label for="preuve-image" class="form-label">Procès-Verbal (Image du PV)</label>
+                                        <input type="file" class="form-control" id="preuve" accept="image/*" required>
+                                    </div>
 
-                                </tbody>
-                            </table>
+                                    <div class="d-grid">
+                                        <button type="button" class="btn btn-success" id="enre_pv">Enregistrer le pv</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card mt-1">
+                        <div class="card-header text-white" style="background-color: #004d40">
+                            <h6 class="text-center">PV</h6>
+                        </div>
+                        <div class="card-body" id="pv">
+                            
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="container mt-5">
-                <div class="row">
-                    <div class="col-md-8 offset-md-2">
-                        <div class="card">
-                            <div class="card-header text-white" style="background-color: #004d40">
-                                <h3 class="text-center">Charger le pv</h3>
-                            </div>
-                            <div class="card-body">
-                                <form id="resultats-vote-form">
-                                    <div class="form-group">
-                                        <div class="mb-3">
-                                            <label for="preuve-image" class="form-label">Procès-Verbal (Image du
-                                                PV)</label>
-                                            <input type="file" class="form-control" id="preuve-image" accept="image/*"
-                                                required>
-                                        </div>
+            <div class="container my-2">
 
-                                        <div class="mb-3">
-                                            <img id="image-preview" class="img-fluid" style="display: none;">
-                                        </div>
+                <div class="card">
 
-                                        <div class="d-grid">
-                                            <button type="submit" class="btn btn-success">Enregistrer le pv</button>
-                                        </div>
-                                </form>
-                            </div>
-                        </div>
+                    <div class="card-header text-white" style="background-color: #004d40">
+                        <h3 class="text-center">Liste des Résultats</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Candidat</th>
+                                    <th>Parti</th>
+                                    <th>Couleur</th>
+                                    <th>Nombre de voie</th>
+                                    <th>Pourcentage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tab_result">
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+
     </main>
 
 
@@ -126,6 +134,6 @@
 
 </body>
 <script src="../../bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../../main.js"></script>
+<script src="../../js/result.js"></script>
 
 </html>

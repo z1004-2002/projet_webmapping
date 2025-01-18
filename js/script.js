@@ -5,8 +5,9 @@ let resultArrondissement = [];
 let results = [];
 let back_button = document.getElementById("back")
 let back_button2 = document.getElementById("back2")
+let titre_tab = document.getElementById("titre_tab")
 let current_region = '';
-
+let globe = []
 var map = L.map('map')
 
 function roundToTwo(num) {
@@ -16,7 +17,6 @@ function roundToTwo(num) {
 function sortResults(data) {
     return data.sort((a, b) => b.nombreVoie - a.nombreVoie);
 }
-
 
 function getMax(data) {
     let numMax = 0;
@@ -51,11 +51,55 @@ let back2 = () => {
     emtyMap()
     loadDepartment(departementStyle, current_region)
 }
+
+const fill_table = (resultats) => {
+    let data = sortResults(resultats.resultCandidat);
+    let tab_resultats = document.getElementById('resultats');
+    titre_tab.innerHTML=`Résultats Globaux`
+    let html2 = ``;
+    results = data
+    for (let i = 0; i < data.length; i++) {
+        html2 += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${data[i].nomCandidat}</td>
+                        <td>${data[i].parti}</td>
+                        <td>${data[i].nombreVoie}</td>
+                        <td>${roundToTwo(data[i].nombreVoie * 100 / resultats.totalElecteur)} %</td>
+                        <td>
+                            <div class="" style="height: 30px; width:30px;background: ${data[i].couleur};margin-left:5px "></div>
+                        </td>
+                    </tr>
+                `;
+    }
+    tab_resultats.innerHTML = html2;
+}
+const fill_table2 = (resultats) => {
+    let data = sortResults(resultats.resultCandidat);
+    let tab_resultats = document.getElementById('resultats');
+    let html2 = ``;
+    results = data
+    for (let i = 0; i < data.length; i++) {
+        html2 += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${data[i].nomCandidat}</td>
+                        <td>${data[i].parti}</td>
+                        <td>${data[i].nombreVoie}</td>
+                        <td>${roundToTwo(data[i].nombreVoie * 100 / resultats.totalElecteur)} %</td>
+                        <td>
+                            <div class="" style="height: 30px; width:30px;background: ${data[i].couleur};margin-left:5px "></div>
+                        </td>
+                    </tr>
+                `;
+    }
+    tab_resultats.innerHTML = html2;
+}
+
+
 const init = () => {
     back_button.style.display = 'none'
     back_button2.style.display = 'none'
-    let html2 = ``;
-    let tab_resultats = document.getElementById('resultats');
     const requestOptions = {
         method: "GET",
         redirect: "follow"
@@ -64,37 +108,16 @@ const init = () => {
     fetch(url + "/api/v1/result/final", requestOptions)
         .then((response) => response.text())
         .then((result) => {
-            let globe = JSON.parse(result)
-            let data = sortResults(globe.resultCandidat);
-            results = data
-
-            for (let i = 0; i < data.length; i++) {
-                html2 += `
-                    <tr>
-                        <td>${i + 1}</td>
-                        <td>${data[i].nomCandidat}</td>
-                        <td>${data[i].parti}</td>
-                        <td>${data[i].nombreVoie}</td>
-                        <td>${roundToTwo(data[i].nombreVoie * 100 / globe.totalElecteur)
-                    } %</td>
-                        <td>
-                        <div class="" style="height: 30px; width:30px;background: ${data[i].couleur};margin-left:5px "></div>
-                        </td>
-
-                    </tr>
-                `;
-            }
-            tab_resultats.innerHTML = html2;
+            globe = JSON.parse(result)
         })
         .catch((error) => console.error(error));
-
-
-
 
     fetch(url + "/api/v1/result/region", requestOptions)
         .then((response) => response.text())
         .then((result) => {
             resultRegion = JSON.parse(result);
+            emtyMap()
+            loadRegion(regionStyle)
         })
         .catch((error) => console.error(error));
 
@@ -109,10 +132,9 @@ const init = () => {
         .then((response) => response.text())
         .then((result) => {
             resultArrondissement = JSON.parse(result);
+            
         })
         .catch((error) => console.error(error));
-
-
 }
 
 
@@ -168,6 +190,7 @@ function getColorRegion(regionName, resultRegion) {
     }
     return '#fff';
 }
+
 function getColorDepartement(departementName, resultDepartement) {
     for (let i = 0; i < resultDepartement.length; i++) {
         if (resultDepartement[i].name == departementName) {
@@ -196,6 +219,7 @@ function getColorDepartement(departementName, resultDepartement) {
     }
     return '#fff';
 }
+
 function getColorArrondissement(arrondissementName, resultArrondissement) {
     for (let i = 0; i < resultArrondissement.length; i++) {
         if (resultArrondissement[i].name == arrondissementName) {
@@ -226,7 +250,6 @@ function getColorArrondissement(arrondissementName, resultArrondissement) {
     return '#fff';
 }
 
-
 function style(feature) {
     return {
         fillColor: getColor(),
@@ -248,6 +271,7 @@ function regionStyle(feature) {
         fillOpacity: 0.7
     };
 }
+
 function departementStyle(feature) {
     return {
         fillColor: getColorDepartement(feature.properties.NAME_2, resultDepartement),
@@ -258,6 +282,7 @@ function departementStyle(feature) {
         fillOpacity: 0.7
     };
 }
+
 function arrondissementStyle(feature) {
     return {
         fillColor: getColorArrondissement(feature.properties.NAME_3, resultArrondissement),
@@ -268,6 +293,7 @@ function arrondissementStyle(feature) {
         fillOpacity: 0.7
     };
 }
+
 const loadPays = (style) => {
     fetch('geojson/cameroun.geojson')
         .then(response => response.json())
@@ -288,6 +314,7 @@ const loadPays = (style) => {
         })
         .catch(error => console.error('Erreur lors du chargement du fichier GeoJSON:', error));
 }
+
 const onEachRegion = (feature, layer) => {
     if (feature.properties && feature.properties.NAME_1) {
         layer.bindTooltip(feature.properties.NAME_1, {
@@ -307,6 +334,7 @@ const loadRegion = (style) => {
     fetch('geojson/region.geojson')
         .then(response => response.json())
         .then(data => {
+            fill_table(globe)
             let layer = L.geoJSON(data, {
                 style: style,
                 onEachFeature: onEachRegion
@@ -336,6 +364,11 @@ const loadDepartment = (style, name) => {
         .then(response => response.json())
         .then(data => {
             let filter = data.features.filter(obj => obj.properties.NAME_1 === name);
+            let aux = resultRegion.filter(obj => obj.name=== name)
+            if (aux.length > 0) {
+                fill_table2(aux[0])
+                titre_tab.innerHTML=`Résultat de la région : ${aux[0].name}`
+            }
             data.features = filter
             let layer = L.geoJSON(data, {
                 style: style,
@@ -355,6 +388,13 @@ const loadArrondissement = (style, name) => {
             let filter = data.features.filter(obj => obj.properties.NAME_2 === name);
             data.features = filter
             current_region = data.features[0].properties.NAME_1
+
+            let aux = resultDepartement.filter(obj => obj.name=== name)
+            if (aux.length > 0) {
+                fill_table2(aux[0])
+                titre_tab.innerHTML=`Résultat dans le département:  ${aux[0].name}`
+            }
+
             let layer = L.geoJSON(data, {
                 style: style,
                 onEachFeature: function (feature, layer) {
@@ -381,6 +421,7 @@ const emtyMap = () => {
 }
 back_button.addEventListener("click", back)
 back_button2.addEventListener("click", back2)
+
 init()
 emtyMap()
 loadRegion(regionStyle)

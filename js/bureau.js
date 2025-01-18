@@ -36,7 +36,15 @@ let init = () => {
         .then((result) => {
             let data = JSON.parse(result);
             let html = ``;
+            let download = ""
+            let link = ""
             for (let i = 0; i < data.length; i++) {
+                if (data[i].pv.length>0){
+                    link = url+"/api/v1/file/download/"+data[i].pv[0].realName+"/"+data[i].pv[0].name
+                    download = `<a href="${link}" target="_blank" class="btn btn-primary download">Télécharger PV</a>`
+                }else{
+                    download = `<a href="#" target="_blank" class="btn btn-secondary disabled">Télécharger PV</a>`
+                }
                 html += `<tr>
                             <td>${i + 1}</td>
                             <td>${data[i].region}</td>
@@ -45,13 +53,15 @@ let init = () => {
                             <td>${data[i].matricule}</td>
                             <td>${data[i].nbreElecteurs}</td>
                             <td>${data[i].scrutateur.login}</td>
-                            <td><button type="button" data-id="${data[i].id}"  class="btn btn-danger sup" onclick="">Sup.</button>
+                            <td>
+                            <button type="button" data-id="${data[i].id}"  class="btn btn-danger sup" onclick="">Sup.</button>
+                            ${download}
+                            </td>
                         </tr>`;
             }
 
             tab_candidat.innerHTML = html;
             buttons = document.querySelectorAll(".sup");
-
 
             buttons.forEach(button => {
                 button.addEventListener("click", function () {
@@ -120,12 +130,21 @@ button.addEventListener('click', (e) => {
                 let alert = document.getElementById('alert');
                 let html = `
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                        <strong>Succès:</strong> Candidat ajouté avec succès.
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                      </div>
+                        <strong>Succès:</strong> Candidat ajouté avec succès.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 `
                 alert.innerHTML = html;
                 init()
+            }else{
+                let alert = document.getElementById('alert');
+                let html = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Alert:</strong> Scrutateur avec ce login existe déjà
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `
+                alert.innerHTML = html;
             }
         })
         .catch((error) => console.error(error));

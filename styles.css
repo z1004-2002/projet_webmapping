@@ -41,7 +41,7 @@ nav a.active {
 
 /* Conteneurs principaux */
 .leaflet-control-attribution{
-    display: none;
+    /* display: none; */
 }
 .table{
     background: #00796b;
