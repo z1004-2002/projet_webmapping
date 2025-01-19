@@ -66,7 +66,6 @@ const fill_table = (resultats) => {
                         <td>${i + 1}</td>
                         <td>${data[i].nomCandidat}</td>
                         <td>${data[i].parti}</td>
-                        <td>${data[i].nombreVoie}</td>
                         <td>${roundToTwo(data[i].nombreVoie * 100 / resultats.totalElecteur)} %</td>
                         <td>
                             <div class="" style="height: 30px; width:30px;background: ${data[i].couleur};margin-left:5px "></div>
@@ -87,7 +86,6 @@ const fill_table2 = (resultats) => {
                         <td>${i + 1}</td>
                         <td>${data[i].nomCandidat}</td>
                         <td>${data[i].parti}</td>
-                        <td>${data[i].nombreVoie}</td>
                         <td>${roundToTwo(data[i].nombreVoie * 100 / resultats.totalElecteur)} %</td>
                         <td>
                             <div class="" style="height: 30px; width:30px;background: ${data[i].couleur};margin-left:5px "></div>
