@@ -100,6 +100,33 @@ const upload_pv = () => {
         })
         .catch((error) => console.error(error));
 }
+const delete_pv = () => {
+    if (!bureau.id) {
+        let alert = document.getElementById('alert3');
+        let html = `
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Erreur:</strong> Identifiant du bureau non trouvé.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                              </div>
+        `
+        alert.innerHTML = html;
+        return
+    }
+    if(bureau.pv.length > 0) {
+        const requestOptions = {
+            method: "DELETE",
+            redirect: "follow"
+          };
+          
+          fetch(url+"/api/v1/file/delete/"+bureau.pv[0].id, requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+                console.log(result)
+                init()
+            })
+            .catch((error) => console.error(error));
+    }
+}
 
 const init = () => {
     const requestOptions = {
@@ -112,14 +139,15 @@ const init = () => {
         .then((result) => {
             bureau = JSON.parse(result)
             if (bureau.id) {
-                console.log(bureau)
+                
                 title.innerHTML = `Résultats du scrutin au bureau ${bureau.matricule} - ${bureau.region}/${bureau.departement}/${bureau.arrondisssement}`;
                 if (bureau.pv.length > 0) {
                     let link = ""
                     const element = bureau.pv[0];
                     link = url + "/api/v1/file/download/" + element.realName + "/" + element.name
 
-                    pv.innerHTML = `<a href="${link}" target="_blank">Télécharger PV : ${element.realName}</a>`
+                    pv.innerHTML = `<a href="${link}" target="_blank">Télécharger PV : ${element.realName}</a> <span id="del" class="btn btn-danger">Delete</span>`
+                    document.getElementById("del").addEventListener('click', delete_pv)
                 } else {
                     pv.innerHTML = `<span>Aucun PV disponible pour le moment.</span>`
                 }
@@ -179,6 +207,7 @@ const onError = (err) => {
 connect()
 
 init()
+
 enregistrer.addEventListener('click', () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
