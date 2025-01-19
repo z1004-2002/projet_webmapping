@@ -7,8 +7,10 @@ let back_button = document.getElementById("back")
 let back_button2 = document.getElementById("back2")
 let titre_tab = document.getElementById("titre_tab")
 let current_region = '';
+let current_departement = '';
 let globe = []
 var map = L.map('map')
+let level = 'region'
 
 function roundToTwo(num) {
     return +(Math.round(num + "e+2") + "e-2");
@@ -55,7 +57,7 @@ let back2 = () => {
 const fill_table = (resultats) => {
     let data = sortResults(resultats.resultCandidat);
     let tab_resultats = document.getElementById('resultats');
-    titre_tab.innerHTML=`Résultats Globaux`
+    titre_tab.innerHTML = `Résultats Globaux`
     let html2 = ``;
     results = data
     for (let i = 0; i < data.length; i++) {
@@ -116,8 +118,10 @@ const init = () => {
         .then((response) => response.text())
         .then((result) => {
             resultRegion = JSON.parse(result);
-            emtyMap()
-            loadRegion(regionStyle)
+            if (level =='region') {
+                emtyMap()
+                loadRegion(regionStyle)
+            }
         })
         .catch((error) => console.error(error));
 
@@ -125,6 +129,10 @@ const init = () => {
         .then((response) => response.text())
         .then((result) => {
             resultDepartement = JSON.parse(result);
+            if (level =='departement') {
+                emtyMap()
+                loadDepartment(departementStyle, current_region)
+            }
         })
         .catch((error) => console.error(error));
 
@@ -132,7 +140,11 @@ const init = () => {
         .then((response) => response.text())
         .then((result) => {
             resultArrondissement = JSON.parse(result);
-            
+            if (level =='arrondissement') {
+                emtyMap()
+                loadArrondissement(arrondissementStyle, current_departement)
+            }
+
         })
         .catch((error) => console.error(error));
 }
@@ -330,7 +342,7 @@ const onEachRegion = (feature, layer) => {
 }
 
 const loadRegion = (style) => {
-
+    level = "region"
     fetch('geojson/region.geojson')
         .then(response => response.json())
         .then(data => {
@@ -358,16 +370,18 @@ const onEachDepartement = (feature, layer) => {
     });
 }
 const loadDepartment = (style, name) => {
+    current_region = name
     back_button.style.display = 'block'
     back_button2.style.display = 'none'
+    level = "departement"
     fetch('geojson/departement.geojson')
         .then(response => response.json())
         .then(data => {
             let filter = data.features.filter(obj => obj.properties.NAME_1 === name);
-            let aux = resultRegion.filter(obj => obj.name=== name)
+            let aux = resultRegion.filter(obj => obj.name === name)
             if (aux.length > 0) {
                 fill_table2(aux[0])
-                titre_tab.innerHTML=`Résultat de la région : ${aux[0].name}`
+                titre_tab.innerHTML = `Résultat de la région : ${aux[0].name}`
             }
             data.features = filter
             let layer = L.geoJSON(data, {
@@ -382,17 +396,19 @@ const loadDepartment = (style, name) => {
 const loadArrondissement = (style, name) => {
     back_button.style.display = 'block'
     back_button2.style.display = 'block'
+    level = "arrondissement"
     fetch('geojson/arrondissement.geojson')
         .then(response => response.json())
         .then(data => {
             let filter = data.features.filter(obj => obj.properties.NAME_2 === name);
             data.features = filter
             current_region = data.features[0].properties.NAME_1
+            current_departement = data.features[0].properties.NAME_2
 
-            let aux = resultDepartement.filter(obj => obj.name=== name)
+            let aux = resultDepartement.filter(obj => obj.name === name)
             if (aux.length > 0) {
                 fill_table2(aux[0])
-                titre_tab.innerHTML=`Résultat dans le département:  ${aux[0].name}`
+                titre_tab.innerHTML = `Résultat dans le département:  ${aux[0].name}`
             }
 
             let layer = L.geoJSON(data, {
@@ -425,3 +441,39 @@ back_button2.addEventListener("click", back2)
 init()
 emtyMap()
 loadRegion(regionStyle)
+
+// Establish WebSocket connection
+const connect = () => {
+    let Sock = new SockJS(url + '/ws'); // Replace `end` with your base URL
+    stompClient = Stomp.over(Sock)
+    stompClient.connect({}, onConnected, onError);
+};
+
+// On successful connection, subscribe to the public channel
+const onConnected = () => {
+    stompClient.subscribe('/chatroom/public', onPublicMessage); // Subscribe to public channel
+};
+
+// Handle incoming public messages
+const onPublicMessage = (payload) => {
+    const message = JSON.parse(payload.body);
+    init()
+};
+
+// Send public messages
+const sendPublicMessage = () => {
+    if (stompClient) {
+        const chatMessage = {
+            sender: "send_number", // Sender's identifier
+            message: "met toi à jour",       // The actual message
+            status: "MESSAGE"    // Optional metadata
+        };
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage)); // Send to public endpoint
+    }
+};
+
+// Handle connection errors
+const onError = (err) => {
+    console.error("Error:", err);
+};
+connect()

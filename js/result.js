@@ -8,6 +8,7 @@ const enre_pv = document.getElementById("enre_pv")
 let bureau = {}
 const max = document.getElementById("maxi")
 const pv = document.getElementById("pv")
+const title = document.getElementById("title")
 
 let resultats = {}
 
@@ -111,6 +112,8 @@ const init = () => {
         .then((result) => {
             bureau = JSON.parse(result)
             if (bureau.id) {
+                console.log(bureau)
+                title.innerHTML = `Résultats du scrutin au bureau ${bureau.matricule} - ${bureau.region}/${bureau.departement}/${bureau.arrondisssement}`;
                 if (bureau.pv.length > 0) {
                     let link = ""
                     const element = bureau.pv[0];
@@ -146,6 +149,34 @@ const init = () => {
         })
         .catch((error) => console.error(error));
 }
+
+const connect = () => {
+    let Sock = new SockJS(url + '/ws'); // Replace `end` with your base URL
+    stompClient = Stomp.over(Sock)
+    stompClient.connect({}, onConnected, onError);
+};
+
+// On successful connection, subscribe to the public channel
+const onConnected = () => {
+    stompClient.subscribe('/chatroom/public', null); // Subscribe to public channel
+};
+
+// Send public messages
+const sendPublicMessage = () => {
+    if (stompClient) {
+        const chatMessage = {
+            sender: "send_number",
+            message: "met toi à jour"
+        };
+        stompClient.send("/app/message", {}, JSON.stringify(chatMessage)); // Send to public endpoint
+    }
+};
+
+// Handle connection errors
+const onError = (err) => {
+    console.error("Error:", err);
+};
+connect()
 
 init()
 enregistrer.addEventListener('click', () => {
@@ -203,6 +234,7 @@ enregistrer.addEventListener('click', () => {
                               </div>
         `
             alert.innerHTML = html;
+            sendPublicMessage()
         })
         .catch((error) => console.error(error));
 });
