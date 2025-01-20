@@ -11,6 +11,8 @@ let current_departement = '';
 let globe = []
 var map = L.map('map')
 let level = 'region'
+let download = document.getElementById('download')
+let download_pdf = document.getElementById('download_pdf')
 
 function roundToTwo(num) {
     return +(Math.round(num + "e+2") + "e-2");
@@ -19,6 +21,66 @@ function roundToTwo(num) {
 function sortResults(data) {
     return data.sort((a, b) => b.nombreVoie - a.nombreVoie);
 }
+const downloadCSV = (filename, csvContent) => {
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
+
+const generatePDF = (data) => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Titre principal
+    doc.setFontSize(16);
+    doc.text("Rapport des Résultats Électoraux", 10, 10);
+
+    // Préparer les données pour le tableau
+    const tableData = [];
+    data.forEach(item => {
+      item.resultCandidat.forEach(candidate => {
+        tableData.push([
+          item.region,
+          item.departement,
+          item.arrondissement,
+          item.matricule,
+          item.totalElecteur,
+          candidate.nomCandidat,
+          candidate.parti,
+          candidate.nombreVoie
+        ]);
+      });
+    });
+
+    // Définir les en-têtes du tableau
+    const tableHeaders = [
+      "Région",
+      "Département",
+      "Arrondissement",
+      "Matricule",
+      "Électeurs",
+      "Nom Candidat",
+      "Parti",
+      "Votes"
+    ];
+
+    // Ajouter le tableau au PDF
+    doc.autoTable({
+      head: [tableHeaders],
+      body: tableData,
+      startY: 20
+    });
+
+    // Télécharger le PDF
+    doc.save("resultats_electoraux.pdf");
+  };
 
 function getMax(data) {
     let numMax = 0;
@@ -116,9 +178,74 @@ const init = () => {
         .then((response) => response.text())
         .then((result) => {
             resultRegion = JSON.parse(result);
-            if (level =='region') {
+            if (level == 'region') {
                 emtyMap()
                 loadRegion(regionStyle)
+
+
+                download.addEventListener('click', () => {
+                    const requestOptions = {
+                        method: "GET",
+                        redirect: "follow"
+                    };
+
+                    fetch(url + "/api/v1/result/bureau", requestOptions)
+                        .then((response) => response.text())
+                        .then((result) => {
+                            let data = JSON.parse(result);
+
+                            if (data.length > 0) {
+                                const headers = [
+                                    "region",
+                                    "departement",
+                                    "arrondissement",
+                                    "matricule",
+                                    "Électeurs totaux",
+                                    "ID Candidat",
+                                    "Nom Candidat",
+                                    "Parti",
+                                    "Nombre de Voies"
+                                ];
+
+                                const rows = data.flatMap(item =>
+                                    item.resultCandidat.map(candidate => [
+                                        item.region,
+                                        item.departement,
+                                        item.arrondissement,
+                                        item.matricule,
+                                        item.totalElecteur,
+                                        candidate.idCandidat,
+                                        candidate.nomCandidat,
+                                        candidate.parti,
+                                        candidate.nombreVoie
+                                    ])
+                                );
+
+                                data = [headers.join(","), ...rows.map(row => row.join(","))].join("\n");
+                                downloadCSV("resultats.csv", data);
+                            }
+
+                        })
+                        .catch((error) => console.error(error));
+                })
+
+                download_pdf.addEventListener('click', () => {
+                    const requestOptions = {
+                        method: "GET",
+                        redirect: "follow"
+                    };
+
+                    fetch(url + "/api/v1/result/bureau", requestOptions)
+                        .then((response) => response.text())
+                        .then((result) => {
+                            let data = JSON.parse(result);
+                            if (data.length > 0) {
+                                generatePDF(data)
+                            }
+                        })
+                        .catch((error) => console.error(error));
+                })
+
             }
         })
         .catch((error) => console.error(error));
@@ -127,7 +254,7 @@ const init = () => {
         .then((response) => response.text())
         .then((result) => {
             resultDepartement = JSON.parse(result);
-            if (level =='departement') {
+            if (level == 'departement') {
                 emtyMap()
                 loadDepartment(departementStyle, current_region)
             }
@@ -138,7 +265,7 @@ const init = () => {
         .then((response) => response.text())
         .then((result) => {
             resultArrondissement = JSON.parse(result);
-            if (level =='arrondissement') {
+            if (level == 'arrondissement') {
                 emtyMap()
                 loadArrondissement(arrondissementStyle, current_departement)
             }
